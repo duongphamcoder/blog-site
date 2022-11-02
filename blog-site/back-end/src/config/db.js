@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+import mysql from "mysql";
 
 const con = mysql.createConnection({
   host: `${process.env.DB_HOST}`,
@@ -7,7 +7,7 @@ const con = mysql.createConnection({
   database: `${process.env.DB_NAME}`,
 });
 
-class db {
+class DB {
   constructor() {}
 
   connect() {
@@ -21,4 +21,5 @@ class db {
   }
 }
 
-module.exports = new db();
+const db = new DB();
+export { db };

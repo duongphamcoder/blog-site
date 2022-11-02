@@ -1,4 +1,4 @@
-const { Sequelize } = require("sequelize");
+import { Sequelize } from "sequelize";
 
 const { DB_HOST, DB_NAME, DB_USER, DB_PASSWORD } = process.env;
 
@@ -7,7 +7,7 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
   dialect: "mysql",
 });
 
-class db {
+class DB {
   constructor() {}
 
   async connect() {
@@ -20,4 +20,6 @@ class db {
   }
 }
 
-module.exports = new db();
+const db = new DB();
+
+export { db, sequelize };
