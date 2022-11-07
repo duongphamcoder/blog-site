@@ -1,0 +1,29 @@
+.navbar-group-item a {
+  display: inline-block;
+  text-transform: capitalize;
+  color: var(--default-color);
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.navbar-group-item a:hover {
+  color: rgba(254, 254, 254, 0.7);
+}
+
+.navbar-group-item .btn {
+  padding: 10px 20px;
+}
+
+.is-login a {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.is-login img {
+  display: block;
+  width: var(--50);
+  height: var(--50);
+  border-radius: 100%;
+}

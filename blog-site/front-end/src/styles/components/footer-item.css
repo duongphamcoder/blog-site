@@ -1,0 +1,14 @@
+.footer-item {
+}
+
+.footer-item .heading {
+  font-size: 25px;
+  line-height: 35px;
+}
+
+.footer-item .description {
+  padding: 10px 0;
+  color: var(--default-color);
+  font-size: 13px;
+  line-height: 18px;
+}

@@ -1,0 +1,15 @@
+.btn {
+  text-transform: uppercase;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  opacity: 0.8;
+}
+
+.btn-primary {
+  color: var(--default-color);
+  background-color: var(--primary-color);
+}

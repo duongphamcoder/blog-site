@@ -1,0 +1,13 @@
+.footer {
+  background-color: var(--secondary-color);
+  font-family: var(--font-roboto);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color: var(--default-color);
+}
+
+.footer-wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
