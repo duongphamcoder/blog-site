@@ -2,7 +2,9 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const { User } = require("../../models");
-const { checkValid, catchError } = require("../../services/user.services");
+const { catchError } = require("../../services/user.services");
+const UserHepler = require("../../helpers/users.helper");
+const errorMessages = require("../../constans/users.const");
 
 const userAttributes = [
   "id",
@@ -24,8 +26,8 @@ class UserController {
   async signin(req, res) {
     try {
       const { username, password } = req.body;
-      const isValid = !username || !password ? false : true;
-      checkValid(isValid, "message", "Username and password is require");
+      const isNotEmpty = username && password ? true : false;
+      UserHepler.signinValidation(isNotEmpty, errorMessages["REQUIRE_MESSAGE"]);
       const user = await User.findOne({
         where: { username: username },
         attributes: signinAttributes,
@@ -35,21 +37,16 @@ class UserController {
           password,
           user.dataValues["password"]
         );
-        checkValid(match, "password", "Password is not match");
+        UserHepler.signinValidation(match, errorMessages["NOT_MATCHING"]);
         const { id, role, status } = user.dataValues;
         const token = jwt.sign({ id, role, status }, process.env.SECRET_KEY);
         return res.status(200).json({ statusCode: 200, token });
       }
-      const errorData =
-        user == null
-          ? { path: "username", message: "Username is not exists" }
-          : { path: "message", message: "User is banned" };
-
-      checkValid(false, errorData.path, errorData.message);
+      UserHepler.signinValidation(false, errorMessages["NOT_MATCHING"]);
     } catch (error) {
       return res
-        .status(203)
-        .json({ statusCode: 203, errors: catchError(error) });
+        .status(400)
+        .json({ statusCode: 400, errors: catchError(error) });
     }
   }
 
@@ -57,18 +54,14 @@ class UserController {
   async signup(req, res) {
     try {
       const data = req.body;
-      checkValid(
-        data["password"] < 6,
-        "password",
-        "Password must have at least 6 characters"
-      );
+      await UserHepler.validateSignup(data);
       data["password"] = await bcrypt.hash(data["password"], saltRounds);
       const user = await User.create(data);
       return res.status(200).json({ statusCode: 200, user });
     } catch (error) {
       return res
-        .status(203)
-        .json({ statusCode: 203, errors: catchError(error) });
+        .status(400)
+        .json({ statusCode: 400, errors: catchError(error) });
     }
   }
 }
