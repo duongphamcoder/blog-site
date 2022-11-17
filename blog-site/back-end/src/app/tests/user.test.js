@@ -82,8 +82,8 @@ describe("POST users/signup", () => {
         lastName: "",
         username: "",
         password: "",
-        email: "usergmail.com",
-        address: "123",
+        email: "usergmail@.com",
+        address: "12344444444",
         phoneNumber: "ss6789",
       });
       expect(res.status).toEqual(400);
