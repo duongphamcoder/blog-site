@@ -44,6 +44,7 @@ class UserController {
       }
       UserHepler.signinValidation(false, errorMessages["NOT_MATCHING"]);
     } catch (error) {
+      console.log(error);
       return res
         .status(400)
         .json({ statusCode: 400, errors: catchError(error) });
@@ -63,6 +64,11 @@ class UserController {
         .status(400)
         .json({ statusCode: 400, errors: catchError(error) });
     }
+  }
+
+  test(req, res) {
+    console.log("aaaaaaaa");
+    res.status(400).json({});
   }
 }
 
