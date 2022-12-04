@@ -1,6 +1,7 @@
 const request = require("supertest");
 const app = require("../../index");
 const axios = require("axios");
+const db = require("../../models");
 
 const axiosRequest = async (endpoint, method, body) => {
   return axios[method](endpoint, body, {
@@ -22,8 +23,9 @@ describe("POST /users/signin", () => {
       expect(res.status).toEqual(200);
     });
 
-    it("should response object contain token & user id", async () => {
+    it("should response object contain token", async () => {
       const res = await axiosRequest(endpoint, POST, body);
+      expect(res.status).toEqual(200);
       expect(res.data).toHaveProperty("token");
     });
   });
@@ -74,7 +76,7 @@ describe("POST users/signup", () => {
   const max = 1000;
   const min = 10;
 
-  describe("when data field is invalid", () => {
+  describe.skip("when data field is invalid", () => {
     // should response status code 400 when data field is invalid
     it("should response status code 400 when data field is invalid", async () => {
       const res = await axiosRequest(endpoint, POST, {
@@ -104,6 +106,46 @@ describe("POST users/signup", () => {
         statusCode: 400,
         errors: {
           email: "Email is invalid",
+        },
+      });
+    });
+
+    it("should response status code 400 and error message when username is exists", async () => {
+      const res = await axiosRequest(endpoint, POST, {
+        firstName: "Jonh",
+        lastName: "Doe",
+        username: "user1",
+        password: "123456",
+        email: "user@gmail.com",
+        address: "Da Nang",
+        phoneNumber: "0123456789",
+      });
+      expect(res.status).toEqual(400);
+      expect(res.data).toMatchObject({
+        statusCode: 400,
+        errors: {
+          username: "Username are already in use",
+        },
+      });
+    });
+
+    it("should response status code 400 and error message when format field is invalid", async () => {
+      const res = await axiosRequest(endpoint, POST, {
+        firstName: "Jonh1",
+        lastName: "Doe1",
+        username: `user${Math.random() * (max - min) + min}`,
+        password: "123456",
+        email: "user@gmail.com",
+        address: "Da Nang",
+        phoneNumber: "01aaaaaa6789",
+      });
+      expect(res.status).toEqual(400);
+      expect(res.data).toMatchObject({
+        statusCode: 400,
+        errors: {
+          firstName: "First name only contain letters",
+          lastName: "Last name only contain letters",
+          phoneNumber: "Phone number must be number",
         },
       });
     });
