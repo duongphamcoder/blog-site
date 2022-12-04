@@ -103,19 +103,16 @@ class UserValidation {
     const minLen = 10;
     const maxLen = 12;
     const phoneNumber = inputValue.trim();
-    const isValid =
-      this.checkEmptyValue(
-        phoneNumber,
-        messages["NOT_EMPTY"](field, fieldName)
-      ) ||
-      this.checkRegexValue(
-        phoneNumber,
-        PHONE_NUMBER_REGEX,
-        messages["ONLY_NUMBER"](field, fieldName)
-      )
-        ? true
-        : false;
-    if (!isValid) {
+    const checkEmptyValue = this.checkEmptyValue(
+      phoneNumber,
+      messages["NOT_EMPTY"](field, fieldName)
+    );
+    const checkRegex = this.checkRegexValue(
+      phoneNumber,
+      PHONE_NUMBER_REGEX,
+      messages["ONLY_NUMBER"](field, fieldName)
+    );
+    if (checkRegex && checkEmptyValue) {
       this.checkLengthValue(
         phoneNumber,
         minLen,
