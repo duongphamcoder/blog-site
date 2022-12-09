@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.User);
-      this.belongsTo(models.Category);
-      this.hasMany(models.Report);
-      this.hasMany(models.Reaction);
-      this.hasMany(models.Comment);
+      this.belongsTo(models.User, { as: "user" });
+      this.belongsTo(models.Category, { as: "category" });
+      this.hasMany(models.Report, { as: "reports" });
+      this.hasMany(models.Reaction, { as: "reactions", foreignKey: "postId" });
+      this.hasMany(models.Comment, { as: "comments", foreignKey: "postId" });
     }
   }
   Post.init(

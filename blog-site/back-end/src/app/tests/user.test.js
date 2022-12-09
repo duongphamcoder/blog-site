@@ -1,16 +1,5 @@
-const request = require("supertest");
-const app = require("../../index");
-const axios = require("axios");
-const db = require("../../models");
-
-const axiosRequest = async (endpoint, method, body) => {
-  return axios[method](endpoint, body, {
-    validateStatus: () => {
-      return true; // default
-    },
-  });
-};
-const POST = "post";
+const axiosRequest = require("./axios.config");
+const { POST } = require("./method.constans");
 
 describe("POST /users/signin", () => {
   const endpoint = "http://localhost:3000/users/signin";
@@ -76,7 +65,7 @@ describe("POST users/signup", () => {
   const max = 1000;
   const min = 10;
 
-  describe.skip("when data field is invalid", () => {
+  describe("when data field is invalid", () => {
     // should response status code 400 when data field is invalid
     it("should response status code 400 when data field is invalid", async () => {
       const res = await axiosRequest(endpoint, POST, {
